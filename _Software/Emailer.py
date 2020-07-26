@@ -71,7 +71,7 @@ def SendMessage(service, user_id, message):
   try:
     message = (service.users().messages().send(userId=user_id, body=message)
                .execute())
-    print('Message Id: %s' % message['id'])
+    #print('Message Id: %s' % message['id'])
     return message
   except (errors.HttpError, error):
     print('An error occurred: %s' % error)
@@ -120,7 +120,6 @@ def CreateMessageWithAttachment(sender, to, subject, message_text, file_dir,
   message.attach(msg)
 
   path = os.path.join(file_dir, filename)
-  print(path)
   content_type, encoding = mimetypes.guess_type(path)
 
   if content_type is None or encoding is not None:

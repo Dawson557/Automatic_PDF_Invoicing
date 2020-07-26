@@ -46,7 +46,7 @@ def main():
 		os.remove(f)
 
 	#loading percent is used solely for visual queue
-	loading_percent = len(therapist_data.index)/100.0
+	loading_percent = 100.0/len(therapist_data.index)
 	percent_complete = 0.0
 	for i in therapist_data.index:
 		therapist = str(therapist_data['Name'][i])
@@ -99,18 +99,20 @@ def main():
 		#Send emails
 		if (opt.email):
 			email_address = str(therapist_data['E-mail'][i])
-			print(email_address)
 			if (email_address != "nan"):
-				message_text = "This is a test of the new invoice e-mailing system"
+				message_text = "Bonjour {},\n\
+				\nVoici votre facture! Nous vous remercions pour votre paiement.\n\
+				\nMerci de fair affaire avec nous!\nDivan Bleu inc.".format(therapist.split()[0])
 				email(email_service, sender, email_address, subject, message_text, file_directory, filename)
 
 		percent_complete += loading_percent
-		print("{}%% complete".format(int(percent_complete)), end="\r")
+		print(" {}{} completed".format(int(percent_complete), "%"), end="\r")
 
 	if (opt.email):
-		print("|")
+		print("")
 		print("--- Invoices Created and Emailed ---")
 	else:
+		print("")
 		print("--- Invoices Created ---")
 
 
