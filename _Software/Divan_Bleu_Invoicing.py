@@ -45,6 +45,9 @@ def main():
 	for f in files:
 		os.remove(f)
 
+	#loading percent is used solely for visual queue
+	loading_percent = len(therapist_data.index)/100.0
+	percent_complete = 0.0
 	for i in therapist_data.index:
 		therapist = str(therapist_data['Name'][i])
 		pays_tax = True if therapist_data['Pays Tax'][i] == "Y" else False
@@ -101,10 +104,14 @@ def main():
 				message_text = "This is a test of the new invoice e-mailing system"
 				email(email_service, sender, email_address, subject, message_text, file_directory, filename)
 
+		percent_complete += loading_percent
+		print("{}%% complete".format(int(percent_complete)), end="\r")
+
 	if (opt.email):
-		print("Invoices Created and Emailed")
+		print("|")
+		print("--- Invoices Created and Emailed ---")
 	else:
-		print("Invoices Created")
+		print("--- Invoices Created ---")
 
 
 if __name__ == '__main__':
