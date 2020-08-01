@@ -72,10 +72,10 @@ def main():
 				quantity = month_data['Quantity'][j]
 				revenue = month_data['Revenue'][j]
 				# balance = str(month_data['Balance'][j])
-				if ("Premier" in service):
+				if ("premier" in service.lower()):
 					position = draw_service(invoice, position, service, str(first_percentage), revenue, revenue * first_percentage, quantity)
 					partial += revenue * first_percentage
-				elif ("Suivi" in service):
+				elif ("suivi" in service.lower()):
 					position = draw_service(invoice, position, service, str(follow_percentage), revenue, revenue * follow_percentage, quantity)
 					partial += revenue * follow_percentage
 				else:
@@ -97,7 +97,7 @@ def main():
 		copyfile(file_directory + filename, "_Recent" + os.sep + filename)
 
 		#Send emails
-		if (opt.email):
+		if (opt.email) and (total != 0):
 			email_address = str(therapist_data['E-mail'][i])
 			if (email_address != "nan"):
 				message_text = "Bonjour {},\n\

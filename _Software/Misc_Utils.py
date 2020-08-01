@@ -1,21 +1,22 @@
 #Get current month and year
 from datetime import datetime
 
-#Get month and year. As of right now invoices need to be created within the month they are for.
+#Get month and year.
+#The month string is for 'last' month so that the bill is for July's commissions when created in August
 def get_month(i):
         switcher={
-                1:'Janvier',
-                2:'Fevrier',
-                3:'Mars',
-                4:'Avril',
-                5:'Mai',
-                6:'Juin',
-                7:'Juillet',
-                8:'Aout',
-                9:'Septembre',
-                10:'Octobre',
-                11:'Novembre',
-                12:'Decembre'
+                2:'Janvier',
+                3:'Fevrier',
+                4:'Mars',
+                5:'Avril',
+                6:'Mai',
+                7:'Juin',
+                8:'Juillet',
+                9:'Aout',
+                10:'Septembre',
+                11:'Octobre',
+                12:'Novembre',
+                1:'Decembre'
              }
         return switcher.get(i,"Invalid day of week")
 
