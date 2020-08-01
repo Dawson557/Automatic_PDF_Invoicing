@@ -48,6 +48,9 @@ If a single word is longer than 60 characters without spaces it will still funct
 '''
 def string_split(input, length=60):
     new_split = []
+    if (len(input) <= 60):
+        new_split.append(input)
+        return new_split
     words = input.split()
     line = ""
     last_word = ""

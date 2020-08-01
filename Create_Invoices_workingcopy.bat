@@ -9,16 +9,20 @@ pause
 :HOME
 echo.
 echo Main Menu
-echo 1 - Create and E-mail this month's invoices
-echo 2 - Create this month's invoices
-echo 3 - Create past invoices
+echo 1 - Create and E-mail this month's commission invoices
+echo 2 - Create and E-mail this month's rent invoices
+echo 3 - Create this month's commission invoices
+echo 4 - Create this month's rent invoices
+echo 5 - Create past invoices
 echo 0 - Exit program
 echo.
 echo Enter Selection: 
 set/p "choice=>"
 if %choice%==1 goto RUN_EMAIL
-if %choice%==2 goto RUN
-if %choice%==3 goto SELECTPAST
+if %choice%==2 goto RUN_RENT_EMAIL
+if %choice%==3 goto RUN
+if %choice%==4 goto RUN_RENT
+if %choice%==5 goto SELECTPAST
 if %choice%==0 goto END
 goto HOME
 pause
@@ -32,6 +36,17 @@ goto HOME
 "C:\Toolkits\anaconda3-5.2.0\python.exe" "_Software\Divan_Bleu_Invoicing.py" --email
 echo.
 goto HOME
+
+:RUN_RENT_EMAIL
+"C:\Toolkits\anaconda3-5.2.0\python.exe" "_Software\Divan_Bleu_Invoicing.py" --email --rent
+echo.
+goto HOME
+
+:RUN_RENT
+"C:\Toolkits\anaconda3-5.2.0\python.exe" "_Software\Divan_Bleu_Invoicing.py" --rent
+echo.
+goto HOME
+
 
 :SELECTPAST
 echo.

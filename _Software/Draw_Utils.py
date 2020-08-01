@@ -92,6 +92,13 @@ def draw_invoice_template(c, name, year, month, day):
 	current_pos -= 4*linespace
 	c.rect(.5*inch, current_pos, width - inch, 1.5*linespace, stroke=False, fill=True)
 	current_pos += .5*linespace
+	
+
+	return current_pos #return the position for the next draw functions to keep drawing from current position
+
+
+def draw_service(c, position, service, rate, revenue, commission, quantity):
+	current_pos = position
 	c.setFillColorRGB(1,1,1) 
 	c.drawString(SERVICE,current_pos,"SERVICE")
 	uniline = u"QT\u00C9"
@@ -101,12 +108,6 @@ def draw_invoice_template(c, name, year, month, day):
 	c.drawString(TAUX, current_pos, "TAUX")
 	c.drawString(COMMISSION, current_pos, "COMMISSION")
 	current_pos -= 1.5*linespace
-
-	return current_pos #return the position for the next draw functions to keep drawing from current position
-
-
-def draw_service(c, position, service, rate, revenue, commission, quantity):
-	current_pos = position
 	service_lines = string_split(service, length=60)
 	c.setFont('Helvetica', 10)
 	c.setFillColorRGB(0,0,0)
@@ -119,9 +120,24 @@ def draw_service(c, position, service, rate, revenue, commission, quantity):
 		current_pos  -= linespace
 	current_pos -= 0.5*linespace
 	return current_pos
-	
+
+def draw_rent(c, position, rent):
+	current_pos = position
+	c.setFillColorRGB(1,1,1) 
+	c.drawString(SERVICE,current_pos,"SERVICE")
+	c.drawString(COMMISSION, current_pos, "MONTANT")
+	current_pos -= 1.5*linespace
+	c.setFont('Helvetica', 10)
+	c.setFillColorRGB(0,0,0)
+	uniline = u"Loyer - Bureau de th\u00e9rapie"
+	c.drawString(SERVICE, current_pos, uniline.strip())
+	c.drawRightString(COMMISSION + 2*RIGHT, current_pos, locale.currency(rent, grouping=True))
+	current_pos -= 1.5*linespace
+	return current_pos
+
 def draw_end(c, position, partial, TPS, TVQ, total, pays_tax):
 	current_pos = position
+	c.setFillColorRGB(0,0,0)
 	c.setDash(6,3) 
 	c.line(inch, current_pos, width - inch, current_pos)
 	current_pos -= 3*linespace

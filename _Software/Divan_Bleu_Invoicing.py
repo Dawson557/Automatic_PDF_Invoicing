@@ -12,7 +12,7 @@ from Misc_Utils import get_date
 #creating canvas to draw pdf
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter, A4
-from Draw_Utils import draw_invoice_template, draw_service, draw_end
+from Draw_Utils import draw_invoice_template, draw_service, draw_end, draw_rent
 #email
 from Emailer import email, build_email_service
 
@@ -20,6 +20,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--month', type=int, default=0)
 parser.add_argument('--year', type=int, default=0)
 parser.add_argument('--email', action='store_true')
+parser.add_argument('--rent', action='store_true')
 
 opt = parser.parse_args()
 
@@ -29,7 +30,7 @@ TVQ_rate = 0.09975
 day, month, month_num, year = get_date(opt.month, opt.year)
 
 sender = "testa6390@gmail.com" #testing account 
-#sender = "Bianca@divanbleu.com" #testing account 
+#sender = "Bianca@divanbleu.com" 
 subject = "Facture de {}".format(month)
 
 def main():
@@ -49,10 +50,13 @@ def main():
 	loading_percent = 100.0/len(therapist_data.index)
 	percent_complete = 0.0
 	for i in therapist_data.index:
+		if (opt.rent == False) and (therapist_data['DB Team'][i] == "N"):
+			continue
 		therapist = str(therapist_data['Name'][i])
 		pays_tax = True if therapist_data['Pays Tax'][i] == "Y" else False
 		first_percentage = float(therapist_data['First Appointment Percentage'][i])
 		follow_percentage = float(therapist_data['Follow Up Percentage'][i])
+		rent = float(therapist_data['Rent'][i])
 
 		if not os.path.exists(therapist):
 			os.makedirs(therapist)
@@ -60,26 +64,33 @@ def main():
 			os.makedirs(therapist + os.sep + year)
 		
 		file_directory = therapist + os.sep + year + os.sep
-		filename =  therapist + "_facture_" + month + "_" + year + ".pdf"
+		if (opt.rent):
+			filename =  therapist + "_facture_loyer_" + month + "_" + year + ".pdf"
+		else:
+			filename =  therapist + "_facture_commission_" + month + "_" + year + ".pdf"
 		invoice = canvas.Canvas(file_directory + filename , pagesize=A4)
 		position = draw_invoice_template(invoice, therapist, year, str(month_num).zfill(2), str(day).zfill(2))
 
-		partial = 0.0
-		for j in month_data.index:
-			if str(month_data['Professional'][j]) == therapist:
-				service = month_data['Service'][j].strip()
-				price = month_data['Price'][j]
-				quantity = month_data['Quantity'][j]
-				revenue = month_data['Revenue'][j]
-				# balance = str(month_data['Balance'][j])
-				if ("premier" in service.lower()):
-					position = draw_service(invoice, position, service, str(first_percentage), revenue, revenue * first_percentage, quantity)
-					partial += revenue * first_percentage
-				elif ("suivi" in service.lower()):
-					position = draw_service(invoice, position, service, str(follow_percentage), revenue, revenue * follow_percentage, quantity)
-					partial += revenue * follow_percentage
-				else:
-					position = draw_service(invoice, position, service, "-", revenue, 0, quantity)
+		if (opt.rent):
+			position = draw_rent(invoice, position, rent)
+			partial = rent
+		else:
+			partial = 0.0
+			for j in month_data.index:
+				if str(month_data['Professional'][j]) == therapist:
+					service = month_data['Service'][j].strip()
+					price = month_data['Price'][j]
+					quantity = month_data['Quantity'][j]
+					revenue = month_data['Revenue'][j]
+					# balance = str(month_data['Balance'][j])
+					if ("premier" in service.lower()):
+						position = draw_service(invoice, position, service, str(first_percentage), revenue, revenue * first_percentage, quantity)
+						partial += revenue * first_percentage
+					elif ("suivi" in service.lower()):
+						position = draw_service(invoice, position, service, str(follow_percentage), revenue, revenue * follow_percentage, quantity)
+						partial += revenue * follow_percentage
+					else:
+						position = draw_service(invoice, position, service, "-", revenue, 0, quantity)
 
 		total = 0.0
 		TPS_total = partial * TPS_rate
