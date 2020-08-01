@@ -20,11 +20,14 @@ def get_month(i):
              }
         return switcher.get(i,"Invalid day of week")
 
-def get_date(optional_month=0, optional_year=0):
+def get_date(rent, optional_month=0, optional_year=0):
     if optional_month == 0:
         today = datetime.today()
         day = today.day
-        month_num = today.month
+        if (rent):
+            month_num = today.month + 1
+        else:
+            month_num = today.month
         month = get_month(month_num)
         year = str(today.year)
     elif optional_year == 0:

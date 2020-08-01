@@ -27,7 +27,7 @@ opt = parser.parse_args()
 TPS_rate = 0.05
 TVQ_rate = 0.09975
 
-day, month, month_num, year = get_date(opt.month, opt.year)
+day, month, month_num, year = get_date(opt.rent, opt.month, opt.year)
 
 sender = "testa6390@gmail.com" #testing account 
 #sender = "Bianca@divanbleu.com" 
