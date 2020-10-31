@@ -15,6 +15,8 @@ from reportlab.lib.pagesizes import letter, A4
 from Draw_Utils import draw_invoice_template, draw_service, draw_end, draw_rent
 #email
 from Emailer import email, build_email_service
+#central spreadsheet tools
+#import Spreadsheet_Organizer as sporg
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--month', type=int, default=0)
@@ -29,8 +31,8 @@ TVQ_rate = 0.09975
 
 day, month, month_num, year = get_date(opt.rent, opt.month, opt.year)
 
-sender = "testa6390@gmail.com" #testing account 
-#sender = "Bianca@divanbleu.com" 
+#sender = "testa6390@gmail.com" #testing account 
+sender = "Bianca@divanbleu.com" 
 subject = "Facture de {}".format(month)
 
 def main():
@@ -50,6 +52,7 @@ def main():
 	loading_percent = 100.0/len(therapist_data.index)
 	percent_complete = 0.0
 	for i in therapist_data.index:
+		percent_complete += loading_percent
 		if (opt.rent == False) and (therapist_data['DB Team'][i] == "N"):
 			continue
 		therapist = str(therapist_data['Name'][i])
@@ -113,10 +116,10 @@ def main():
 			if (email_address != "nan"):
 				message_text = "Bonjour {},\n\
 				\nVoici votre facture! Nous vous remercions pour votre paiement.\n\
-				\nMerci de fair affaire avec nous!\nDivan Bleu inc.".format(therapist.split()[0])
+				\nMerci de faire affaire avec nous!\nDivan bleu inc.".format(therapist.split()[0])
 				email(email_service, sender, email_address, subject, message_text, file_directory, filename)
 
-		percent_complete += loading_percent
+		
 		print(" {}{} completed".format(int(percent_complete), "%"), end="\r")
 
 	if (opt.email):

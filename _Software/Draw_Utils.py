@@ -118,6 +118,9 @@ def draw_service(c, position, service, rate, revenue, commission, quantity):
 	for line in service_lines:
 		c.drawString(SERVICE, current_pos, line)
 		current_pos  -= linespace
+		if current_pos < 135:
+			c.showPage()
+			current_pos = height - (0.5*inch)
 	current_pos -= 0.5*linespace
 	return current_pos
 
