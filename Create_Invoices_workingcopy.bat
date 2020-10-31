@@ -9,11 +9,10 @@ pause
 :HOME
 echo.
 echo Main Menu
-echo 1 - Create and E-mail this month's commission invoices
-echo 2 - Create and E-mail this month's rent invoices
-echo 3 - Create this month's commission invoices
-echo 4 - Create this month's rent invoices
-echo 5 - Create past invoices
+echo 1 - Create and E-mail commission invoices
+echo 2 - Create and E-mail rent invoices
+echo 3 - Create commission invoices
+echo 4 - Create rent invoices
 echo 0 - Exit program
 echo.
 echo Enter Selection: 
@@ -22,47 +21,11 @@ if %choice%==1 goto RUN_EMAIL
 if %choice%==2 goto RUN_RENT_EMAIL
 if %choice%==3 goto RUN
 if %choice%==4 goto RUN_RENT
-if %choice%==5 goto SELECTPAST
 if %choice%==0 goto END
 goto HOME
 pause
 
 :RUN
-"C:\Toolkits\anaconda3-5.2.0\python.exe" "_Software\Divan_Bleu_Invoicing.py"
-echo.
-goto HOME
-
-:RUN_EMAIL
-"C:\Toolkits\anaconda3-5.2.0\python.exe" "_Software\Divan_Bleu_Invoicing.py" --email
-echo.
-goto HOME
-
-:RUN_RENT_EMAIL
-"C:\Toolkits\anaconda3-5.2.0\python.exe" "_Software\Divan_Bleu_Invoicing.py" --email --rent
-echo.
-goto HOME
-
-:RUN_RENT
-"C:\Toolkits\anaconda3-5.2.0\python.exe" "_Software\Divan_Bleu_Invoicing.py" --rent
-echo.
-goto HOME
-
-
-:SELECTPAST
-echo.
-echo 1 - Change Month
-echo 2 - Change Month and Year
-echo 0 - Go Back
-echo.
-echo Enter Selection: 
-set/p "selectionpast=>"
-if %selectionpast%==1 goto RUNMONTH
-if %selectionpast%==2 goto RUNYEAR
-if %selectionpast%==0 goto HOME
-
-
-
-:RUNYEAR
 echo Please enter the month of the invoices
 set/p "choicemonth=>"
 echo Please enter the year of the invoices
@@ -71,11 +34,33 @@ set/p "choiceyear=>"
 echo.
 goto HOME
 
-:RUNMONTH
-echo Please enter the number for the month of the invoices
+:RUN_EMAIL
+echo Please enter the month of the invoices
 set/p "choicemonth=>"
-"C:\Toolkits\anaconda3-5.2.0\python.exe" "_Software\Divan_Bleu_Invoicing.py" --month=%choicemonth%
+echo Please enter the year of the invoices
+set/p "choiceyear=>"
+"C:\Toolkits\anaconda3-5.2.0\python.exe" "_Software\Divan_Bleu_Invoicing.py" --email --month=%choicemonth% --year=%choiceyear%
 echo.
 goto HOME
+
+:RUN_RENT
+echo Please enter the month of the invoices
+set/p "choicemonth=>"
+echo Please enter the year of the invoices
+set/p "choiceyear=>"
+"C:\Toolkits\anaconda3-5.2.0\python.exe" "_Software\Divan_Bleu_Invoicing.py" --rent --month=%choicemonth% --year=%choiceyear%
+echo.
+goto HOME
+
+
+:RUN_RENT_EMAIL
+echo Please enter the month of the invoices
+set/p "choicemonth=>"
+echo Please enter the year of the invoices
+set/p "choiceyear=>"
+"C:\Toolkits\anaconda3-5.2.0\python.exe" "_Software\Divan_Bleu_Invoicing.py" --rent --email --month=%choicemonth% --year=%choiceyear%
+echo.
+goto HOME
+
 
 :END

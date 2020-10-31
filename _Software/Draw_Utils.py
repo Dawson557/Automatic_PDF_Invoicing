@@ -138,7 +138,7 @@ def draw_rent(c, position, rent):
 	current_pos -= 1.5*linespace
 	return current_pos
 
-def draw_end(c, position, partial, TPS, TVQ, total, pays_tax):
+def draw_end(c, position, partial, TPS, TVQ, total):
 	current_pos = position
 	c.setFillColorRGB(0,0,0)
 	c.setDash(6,3) 
@@ -150,11 +150,10 @@ def draw_end(c, position, partial, TPS, TVQ, total, pays_tax):
 	c.setFont('Helvetica', 10)
 	c.drawRightString(COMMISSION + 2*RIGHT, current_pos, locale.currency(partial, grouping=True))
 	current_pos -= linespace
-	if pays_tax:
-		c.drawRightString(COMMISSION+ 2*RIGHT, current_pos, locale.currency(TPS, grouping=True))
-		current_pos -= linespace
-		c.drawRightString(COMMISSION + 2*RIGHT, current_pos, locale.currency(TVQ, grouping=True))
-		current_pos -= linespace
+	c.drawRightString(COMMISSION+ 2*RIGHT, current_pos, locale.currency(TPS, grouping=True))
+	current_pos -= linespace
+	c.drawRightString(COMMISSION + 2*RIGHT, current_pos, locale.currency(TVQ, grouping=True))
+	current_pos -= linespace
 	current_pos -= 0.5*linespace
 	c.setFont("Helvetica-Bold", 11)
 	c.drawRightString(COMMISSION + 2*RIGHT, current_pos, locale.currency(total, grouping=True))
@@ -163,11 +162,10 @@ def draw_end(c, position, partial, TPS, TVQ, total, pays_tax):
 	c.setFont('Helvetica', 10)
 	c.drawString(QTE, pos2, "TOTAL PARTIEL")
 	pos2 -= linespace
-	if pays_tax:
-		c.drawString(QTE, pos2, "TPS @ 5%")
-		pos2 -= linespace
-		c.drawString(QTE, pos2, "TVQ @ 9,975%")
-		pos2 -= linespace
+	c.drawString(QTE, pos2, "TPS @ 5%")
+	pos2 -= linespace
+	c.drawString(QTE, pos2, "TVQ @ 9,975%")
+	pos2 -= linespace
 	c.setFont("Helvetica-Bold", 11)
 	c.drawString(QTE, pos2, "TOTAL")
 
