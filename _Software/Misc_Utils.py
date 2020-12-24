@@ -22,6 +22,8 @@ def get_month(i):
              }
         return switcher.get(i,"Invalid day of week")
 
+#This method is mostly overkill now as we no longer use 'todays' date as default for the invoices being created
+#TODO clean up unneccessary parts in here.
 def get_date(rent, optional_month=0, optional_year=0):
     if optional_month == 0:
         today = datetime.today()

@@ -46,8 +46,12 @@ def main():
 	#OverviewSheet is maintained by Bianca, contains data about each therapists payment schemes
 	month_data = pd.read_excel('ClientRevenueReportList.xlsx', sheet_name='Sheet1')
 	therapist_data = pd.read_excel('OverviewSheet.xlsx', sheet_name="Sheet1")
+
+	#Data_Packager puts all the relevant information into a dictionary for easy reference
+	#since divan bleu doesn't have that many therapists this can all be kept in memory simulatneously
 	data_package = Data_Packager.Therapist_Data_Package(therapist_data, month_data)
 
+	#This puts together the Gmail API 
 	email_service = build_email_service()
 
 	if not os.path.exists("_Recent"):
@@ -68,22 +72,16 @@ def main():
 		if (opt.rent == False) and not (data_package.isDB_team(therapist)):
 			continue
 
-
-		# therapist = str(therapist_data['Name'][i])
-		# pays_tax = True if therapist_data['Pays Tax'][i] == "Y" else False
-		# first_percentage = float(therapist_data['First Appointment Percentage'][i])
-		# follow_percentage = float(therapist_data['Follow Up Percentage'][i])
-		# rent = float(therapist_data['Rent'][i])
-
 		file_directory, filename = create_filename(therapist, month, year, opt.rent)
 		invoice = canvas.Canvas(file_directory + filename , pagesize=A4)
 		position = draw_invoice_template(invoice, therapist, year, str(month_num).zfill(2), str(day).zfill(2))
 
 		excel_fn = therapist + os.sep + therapist + "_totals.xlsx"
 		services = data_package.therapists[therapist]['services']
-		sheet_handler.individual_report(opt.rent, excel_fn, services)
+		sheet_handler.individual_report(opt.rent, excel_fn, services, month_num, year)
 
 		if (opt.rent):
+			rent = data_package.therapists[therapist]['rent']
 			position = draw_rent(invoice, position, rent)
 			partial = rent
 
@@ -98,18 +96,6 @@ def main():
 				else:
 					position = draw_service(invoice, position, service, "-", revenue, 0, quantity)
 				
-				# if ("premier" in service.lower()):
-				# 	service_type = 'first'
-				# elif ("suivi" in service.lower()):
-				# 	service_type = 'follow'
-				# 	position = draw_service(invoice, position, service, str(first_percentage), revenue, revenue * first_percentage, quantity)
-				# 	partial += revenue * first_percentage
-				# elif ("suivi" in service.lower()):
-				# 	ser
-				# 	position = draw_service(invoice, position, service, str(follow_percentage), revenue, revenue * follow_percentage, quantity)
-				# 	partial += revenue * follow_percentage
-				# else:
-				# 	position = draw_service(invoice, position, service, "-", revenue, 0, quantity)
 
 		total = 0.0
 		TPS_total = partial * TPS_rate
