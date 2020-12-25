@@ -50,26 +50,34 @@ class Therapist_Data_Package:
 		return rate, revenue, commission, quantity
 
 	def get_excel_values(self, therapist):
-		tax_rate = self.tps + self.tvq
-		premier = 0 
-		suivi = 0
-		taxes = 0
+		premier = 0. 
+		suivi = 0.
+		tps_taxes = 0.
+		tvq_taxes = 0.
 		services = self.therapists[therapist]['services']
 		for service in services:
 			if ("premier" in service.lower()):
 				service_type = 'first'
 				rate = self.therapists[therapist][service_type]
-				commision = rate * self.therapists[therapist]['services'][service]['revenue']
-				premier += commision
-				taxes += (tax_rate * commision)
+				commission = rate * self.therapists[therapist]['services'][service]['revenue']
+				premier += commission
+				tps_taxes += (self.tps * commission)
+				tvq_taxes += (self.tvq * commission)
 			elif ("suivi" in service.lower()):
 				service_type = 'follow'
 				rate = self.therapists[therapist][service_type]
-				commision = rate * self.therapists[therapist]['services'][service]['revenue']
-				suivi += commision
-				taxes += (tax_rate * commision)
+				commission = rate * self.therapists[therapist]['services'][service]['revenue']
+				suivi += commission
+				tps_taxes += (self.tps * commission)
+				tvq_taxes += (self.tvq * commission)
 			
-		return float(premier), float(suivi), float(taxes)
+		return float(premier), float(suivi), float(tps_taxes + tvq_taxes)
+
+	def get_rent(self, therapist):
+		rent_amount = self.therapists[therapist]['rent']
+		tps_taxes = rent_amount * self.tps
+		tvq_taxes = rent_amount * self.tvq
+		return rent_amount, float(tps_taxes + tvq_taxes)
 
 
 				
