@@ -85,7 +85,7 @@ def create_filename(therapist, month, year, rent):
         os.makedirs(therapist + os.sep + year)
     excel_fn = therapist + os.sep + therapist + "_totals.xlsx"
     if not os.path.isfile(excel_fn):
-        Spreadsheet_Controller.initialize_report(excel_fn, year)
+        Spreadsheet_Controller.create_workbook(excel_fn, year)
 
     file_directory = therapist + os.sep + year + os.sep
     if (rent):
