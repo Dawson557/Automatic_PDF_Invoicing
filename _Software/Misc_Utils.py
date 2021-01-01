@@ -18,6 +18,7 @@ def get_month(i):
                 10:'Septembre',
                 11:'Octobre',
                 12:'Novembre',
+                13:'Decembre',
                 1:'Decembre'
              }
         return switcher.get(i,"Invalid day of week")

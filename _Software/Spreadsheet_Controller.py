@@ -34,8 +34,8 @@ class Sheet_Handler:
 			sheet[self.month]['Suivi'] = suivi
 			sheet[self.month]['Commission Taxes'] = taxes
 			self.update_commission_totals(premier, suivi, taxes)
-		#add in formulae
-		sheet = add_formulae(sheet)
+		# #add in formulae
+		# sheet = add_formulae(sheet)
 		#update the sheet in the workbook
 		workbook[str(self.year)] = sheet
 
@@ -43,6 +43,7 @@ class Sheet_Handler:
 		writer_object = pd.ExcelWriter(filename, engine='xlsxwriter')
 		for key in workbook:
 			df = pd.DataFrame.from_dict(workbook[key])
+			df = add_formulae(df)
 			df.to_excel(writer_object, sheet_name=key)
 
 		writer_object.save()	
@@ -87,7 +88,7 @@ class Sheet_Handler:
 		writer_object.save()	
 
 def initialize_new_sheet():
-	z = [0,0,0,0,0,0]
+	z = [0,0,0,0,0,"SUM"]
 	template = {'Janvier':z, 'Fevrier':z, 'Mars':z, 'Avril':z,'Mai':z, 'Juin':z, 'Juillet':z, 
 	'Aout':z, 'Septembre':z, 'Octobre':z, 'Novembre':z, 'Decembre':z,  'Cumulative Year':z} 
 	df = pd.DataFrame(template, index=['Rent', 'Premier', 'Suivi', 'Rent Taxes', 'Commission Taxes', 'Total'])
@@ -95,7 +96,7 @@ def initialize_new_sheet():
 
 #This is currently the same as initialize_new_sheet but I'm keeping it seperate because I'll likely be changing it
 def initialize_summary_sheet():
-	z = [0,0,0,0,0,0]
+	z = [0,0,0,0,0,"SUM"]
 	template = {'Janvier':z, 'Fevrier':z, 'Mars':z, 'Avril':z,'Mai':z, 'Juin':z, 'Juillet':z, 
 	'Aout':z, 'Septembre':z, 'Octobre':z, 'Novembre':z, 'Decembre':z,  'Cumulative Year':z} 
 	df = pd.DataFrame(template, index=['Rent', 'Premier', 'Suivi', 'Rent Taxes', 'Commission Taxes', 'Total'])
