@@ -14,6 +14,7 @@ class Therapist_Data_Package:
 			follow = float(therapist_data['Follow Up Percentage'][i])
 			rent = float(therapist_data['Rent'][i])
 			DB_team = True if therapist_data['DB Team'][i] == "Y" else False
+			email_address = str(therapist_data['E-mail'][i])
 
 			#load services into dictionary
 			services = {}
@@ -27,12 +28,15 @@ class Therapist_Data_Package:
 
 
 
-			self.therapists[therapist] = { 'first':first, 'follow':follow, 'rent':rent, 'DB':DB_team, 'services':services}
+			self.therapists[therapist] = { 'first':first, 'follow':follow, 'rent':rent, 'DB':DB_team, 'email':email_address, 'services':services}
 
 		self.num_therapists = len(self.therapists)
 
 	def isDB_team(self, key):
 		return self.therapists[key]['DB']
+
+	def get_email(self, key):
+		return self.therapists[key]['email']
 
 	def get_drawing_values(self, key, service):
 		if ("premier" in service.lower()):

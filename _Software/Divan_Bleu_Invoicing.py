@@ -110,7 +110,7 @@ def main():
 
 		#Send emails
 		if (opt.email) and (total != 0):
-			email_address = str(therapist_data['E-mail'][i])
+			email_address = data_package.get_email(therapist)
 			if (email_address != "nan"):
 				message_text = "Bonjour {},\n\
 				\nVoici votre facture! Nous vous remercions pour votre paiement.\n\

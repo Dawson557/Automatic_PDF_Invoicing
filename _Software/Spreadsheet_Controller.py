@@ -1,7 +1,6 @@
 import pandas as pd
 from pandas import ExcelWriter
 from pandas import ExcelFile
-import openpyxl as pyxl
 
 
 class Sheet_Handler:
@@ -16,7 +15,7 @@ class Sheet_Handler:
 
 	def individual_report(self, rent, therapist, filename, data_package):
 		sheet = None
-		workbook = pd.read_excel(filename, sheet_name=None, dtype='object')
+		workbook = pd.read_excel(filename, sheet_name=None, dtype='object', index_col=0)
 		#Check that sheet exists in workbook and initialize if not.
 		if str(self.year) in workbook:
 			sheet = workbook[str(self.year)]
@@ -60,7 +59,7 @@ class Sheet_Handler:
 
 	def summary_report(self, filename, rent):
 		sheet = None
-		workbook = pd.read_excel(filename, sheet_name=None, dtype='object')
+		workbook = pd.read_excel(filename, sheet_name=None, dtype='object', index_col=0)
 		#Check that sheet exists in workbook and initialize if not.
 		if str(self.year) in workbook:
 			sheet = workbook[str(self.year)]
@@ -104,9 +103,9 @@ def initialize_summary_sheet():
 
 #Loading in the excel sheet it recognizes formulae as the number values shown, this converts them back to formulae for saving
 def add_formulae(sheet):
-	column = ['=SUM(B2:M2)', '=SUM(B3:M3)','=SUM(B4:M4)','=SUM(B5:M5)', '=SUM(B6:M5)', '=SUM(N2:N6)',  ]
+	column = ['=SUM(B2:M2)', '=SUM(B3:M3)','=SUM(B4:M4)','=SUM(B5:M5)', '=SUM(B6:M6)', '=SUM(N2:N6)',  ]
 	row = ['=SUM(B2:B6)','=SUM(C2:C6)', '=SUM(D2:D6)','=SUM(E2:E6)','=SUM(F2:F6)','=SUM(G2:G6)',
-	'=SUM(H2:H6)','=SUM(I2:I6)','=SUM(J2:J6)','=SUM(K2:K6)','=SUM(L2:L6)','=SUM(M2:M6)']
+	'=SUM(H2:H6)','=SUM(I2:I6)','=SUM(J2:J6)','=SUM(K2:K6)','=SUM(L2:L6)','=SUM(M2:M6)', '=SUM(N2:N6)']
 	index = -1
 	for name, val in sheet.iteritems():
 		index += 1

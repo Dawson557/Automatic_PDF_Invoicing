@@ -25,29 +25,14 @@ def get_month(i):
 #This method is mostly overkill now as we no longer use 'todays' date as default for the invoices being created
 #TODO clean up unneccessary parts in here.
 def get_date(rent, optional_month=0, optional_year=0):
-    if optional_month == 0:
-        today = datetime.today()
-        day = today.day
-        if (rent):
-            month_num = today.month + 1
-        else:
-            month_num = today.month
+    day = 1
+    month_num = optional_month
+    month = ''
+    if rent:
+        month = get_month(month_num + 1)
+    else:
         month = get_month(month_num)
-        year = str(today.year)
-    elif optional_year == 0:
-        today = datetime.today()
-        day = 1
-        month_num = optional_month
-        month = get_month(month_num)
-        year = str(today.year)
-    else: #month and year were manually set
-        day = 1
-        if rent:
-            month_num = optional_month + 1
-        else:
-            month_num = optional_month
-        month = get_month(month_num)
-        year = str(optional_year)
+    year = str(optional_year)
     return day, month, month_num, year
 
 '''
