@@ -4,6 +4,7 @@ title Divan Bleu Invoicing System
 echo.
 echo Make sure you've downloaded the latest ClientRevenueReportList.xlsx from GoRendezVous and saved in Invoices folder
 echo.
+echo Close any Excel documents connected to the software. Thanks!
 pause
 
 :HOME

@@ -34,8 +34,7 @@ class Sheet_Handler:
 			sheet[self.month]['Suivi'] = suivi
 			sheet[self.month]['Commission Taxes'] = taxes
 			self.update_commission_totals(premier, suivi, taxes)
-		# #add in formulae
-		# sheet = add_formulae(sheet)
+
 		#update the sheet in the workbook
 		workbook[str(self.year)] = sheet
 
@@ -43,6 +42,7 @@ class Sheet_Handler:
 		writer_object = pd.ExcelWriter(filename, engine='xlsxwriter')
 		for key in workbook:
 			df = pd.DataFrame.from_dict(workbook[key])
+			#pandas strips off the formulae everytime like some kind of pleb so we need to re-add them everytime
 			df = add_formulae(df)
 			df.to_excel(writer_object, sheet_name=key)
 
@@ -75,7 +75,6 @@ class Sheet_Handler:
 			sheet[self.month]['Suivi'] = self.suivi_total
 			sheet[self.month]['Commission Taxes'] = self.commission_tax_total
 
-		sheet = add_formulae(sheet)
 		#update the sheet in the workbook
 		workbook[str(self.year)] = sheet
 
@@ -83,6 +82,7 @@ class Sheet_Handler:
 		writer_object = pd.ExcelWriter(filename, engine='xlsxwriter')
 		for key in workbook:
 			df = pd.DataFrame.from_dict(workbook[key])
+			df = add_formulae(df)
 			df.to_excel(writer_object, sheet_name=key)
 
 		writer_object.save()	

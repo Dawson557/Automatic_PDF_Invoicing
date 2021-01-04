@@ -7,32 +7,26 @@ import Spreadsheet_Controller
 #The month string is for 'last' month so that the bill is for July's commissions when created in August
 def get_month(i):
         switcher={
-                2:'Janvier',
-                3:'Fevrier',
-                4:'Mars',
-                5:'Avril',
-                6:'Mai',
-                7:'Juin',
-                8:'Juillet',
-                9:'Aout',
-                10:'Septembre',
-                11:'Octobre',
-                12:'Novembre',
-                13:'Decembre',
-                1:'Decembre'
+                1:'Janvier',
+                2:'Fevrier',
+                3:'Mars',
+                4:'Avril',
+                5:'Mai',
+                6:'Juin',
+                7:'Juillet',
+                8:'Aout',
+                9:'Septembre',
+                10:'Octobre',
+                11:'Novembre',
+                12:'Decembre'
              }
         return switcher.get(i,"Invalid day of week")
 
-#This method is mostly overkill now as we no longer use 'todays' date as default for the invoices being created
-#TODO clean up unneccessary parts in here.
-def get_date(rent, optional_month=0, optional_year=0):
+
+def get_date(optional_month=0, optional_year=0):
     day = 1
     month_num = optional_month
-    month = ''
-    if rent:
-        month = get_month(month_num + 1)
-    else:
-        month = get_month(month_num)
+    month = get_month(month_num)
     year = str(optional_year)
     return day, month, month_num, year
 
